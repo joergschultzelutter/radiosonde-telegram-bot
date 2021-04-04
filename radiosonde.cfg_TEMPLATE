@@ -1,0 +1,7 @@
+[radiosonde_config]
+
+# API key for Telegram bot
+telegram_token = NOT_CONFIGURED
+
+# API key for www.aprs.fi
+aprsdotfi_api_key = NOT_CONFIGURED
