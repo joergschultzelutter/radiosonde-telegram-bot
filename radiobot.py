@@ -29,9 +29,31 @@ from telegram.ext import MessageHandler, Filters
 from utility_modules import read_program_config
 from radiosonde_modules import get_radiosonde_landing_prediction
 from geopy_modules import get_reverse_geopy_data
+import sys
+import signal
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(module)s -%(levelname)s- %(message)s")
 logger = logging.getLogger(__name__)
+
+def signal_term_handler(signal_number, frame):
+    """
+    Signal handler for SIGTERM signals. Ensures that the program
+    gets terminated in a safe way, thus allowing all databases etc
+    to be written to disc.
+
+    Parameters
+    ==========
+    signal_number:
+        The signal number
+    frame:
+        Signal frame
+
+    Returns
+    =======
+    """
+
+    logger.info(msg="Received SIGTERM; forcing clean program exit")
+    sys.exit(0)
 
 def start(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="Ich bin ein Testbot für DB4BIN")
@@ -53,20 +75,31 @@ def unknown(update, context):
 
 if __name__ == "__main__":
     success, aprsdotfi_api_key, telegram_token = read_program_config()
-    if success:
-        updater = Updater(token=telegram_token, use_context=True)
-        dispatcher = updater.dispatcher
-
-        start_handler = CommandHandler('start', start)
-        dispatcher.add_handler(start_handler)
-
-        sonde_handler = CommandHandler('sonde', sonde)
-        dispatcher.add_handler(sonde_handler)
-
-        # must be last handler prior to polling start
-        unknown_handler = MessageHandler(Filters.command, unknown)
-        dispatcher.add_handler(unknown_handler)
-
-        updater.start_polling()
-    else:
+    if not success:
         logger.info("Cannot read config file")
+        exit(0)
+
+    # Register the SIGTERM handler; this will allow a safe shutdown of the program
+    logger.info(msg="Registering SIGTERM handler for safe shutdown...")
+    signal.signal(signal.SIGTERM, signal_term_handler)
+
+    updater = Updater(token=telegram_token, use_context=True)
+    dispatcher = updater.dispatcher
+
+    start_handler = CommandHandler('start', start)
+    dispatcher.add_handler(start_handler)
+
+    sonde_handler = CommandHandler('sonde', sonde)
+    dispatcher.add_handler(sonde_handler)
+
+    # must be last handler prior to polling start
+    unknown_handler = MessageHandler(Filters.command, unknown)
+    dispatcher.add_handler(unknown_handler)
+
+    try:
+        updater.start_polling()
+    except (KeyboardInterrupt, SystemExit):
+        logger.info(
+            msg="KeyboardInterrupt or SystemExit in progress; shutting down ..."
+        )
+        updater.stop()
