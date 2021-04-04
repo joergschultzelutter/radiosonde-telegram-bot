@@ -69,6 +69,8 @@ def sonde(update, context):
                 success, address = get_reverse_geopy_data(latitude=lat,longitude=lon,language="de")
                 if success:
                     context.bot.send_message(chat_id=update.effective_chat.id, text=address)
+            else:
+                context.bot.send_message(chat_id=update.effective_chat.id, text=f"Sorry, nix gefunden zu '{sonde}'")
 
 def unknown(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="Nuschel nicht so. Ich verstehe Dich nicht")
@@ -103,3 +105,6 @@ if __name__ == "__main__":
             msg="KeyboardInterrupt or SystemExit in progress; shutting down ..."
         )
         updater.stop()
+        logger.info(
+            msg="Have terminated the updater"
+        )
