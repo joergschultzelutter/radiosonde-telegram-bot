@@ -15,7 +15,7 @@ Each site gets queried individually.
 ### Python packages
 
 - [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot)
-- [activesoup](https://github.com/jelford/activesoup) required: version 0.2.3 or greater
+- [activesoup](https://github.com/jelford/activesoup) required: version 0.3.0 or greater
 - [beautifulsoup4](https://www.crummy.com/software/BeautifulSoup/)
 - [geopy](https://github.com/geopy/geopy)
 - [requests](https://github.com/psf/requests)
