@@ -206,6 +206,14 @@ def sonde(update, context):
                         parse_mode=ParseMode.HTML,
                     )
 
+                climbing = radiosondy_response_data["climbing_meters_per_second"]
+                if climbing:
+                    context.bot.send_message(
+                        chat_id=update.effective_chat.id,
+                        text=f"<b>Climbing:</b> {climbing} m/s",
+                        parse_mode=ParseMode.HTML,
+                    )
+
                 avg_ascent_speed = radiosondy_response_data["avg_ascent_speed"]
                 if avg_ascent_speed:
                     context.bot.send_message(
