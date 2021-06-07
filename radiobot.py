@@ -198,29 +198,11 @@ def sonde(update, context):
                 max_speed = radiosondy_response_data["max_speed"]
                 max_speed_height = radiosondy_response_data["max_speed_height"]
 
-                if max_speed:
-                    _msg = f"<b>Max Speed:</b> {max_speed} km/h"
-                    if max_speed_height:
-                        _msg += f" at {max_speed_height} m"
+                altitude = radiosondy_response_data["altitude_m"]
+                if altitude:
                     context.bot.send_message(
                         chat_id=update.effective_chat.id,
-                        text=_msg,
-                        parse_mode=ParseMode.HTML,
-                    )
-
-                avg_speed_kmh = radiosondy_response_data["avg_speed_kmh"]
-                if avg_speed_kmh:
-                    context.bot.send_message(
-                        chat_id=update.effective_chat.id,
-                        text=f"<b>Average Speed:</b> {avg_speed_kmh} km/h",
-                        parse_mode=ParseMode.HTML,
-                    )
-
-                max_altitude = radiosondy_response_data["max_altitude"]
-                if max_altitude:
-                    context.bot.send_message(
-                        chat_id=update.effective_chat.id,
-                        text=f"<b>Maximum Altitude:</b> {max_altitude} m",
+                        text=f"<b>Current altitude:</b> {altitude} m",
                         parse_mode=ParseMode.HTML,
                     )
 
