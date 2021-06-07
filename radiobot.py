@@ -212,7 +212,7 @@ def sonde(update, context):
                 if avg_speed_kmh:
                     context.bot.send_message(
                         chat_id=update.effective_chat.id,
-                        text=f"<b>Average Speed:</b> {launch_site} km/h",
+                        text=f"<b>Average Speed:</b> {avg_speed_kmh} km/h",
                         parse_mode=ParseMode.HTML,
                     )
 
