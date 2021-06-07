@@ -149,6 +149,7 @@ def sonde(update, context):
                         text=f"<b>Launch Site:</b> {launch_site}",
                         parse_mode=ParseMode.HTML,
                     )
+
                 probe_status = radiosondy_response_data["probe_status"]
                 if probe_status:
                     context.bot.send_message(
@@ -194,6 +195,51 @@ def sonde(update, context):
                         text=f"<b>Landing description:</b> {landing_description}",
                         parse_mode=ParseMode.HTML,
                     )
+                max_speed = radiosondy_response_data["max_speed"]
+                max_speed_height = radiosondy_response_data["max_speed_height"]
+
+                if max_speed:
+                    _msg = f"<b>Max Speed:</b> {max_speed} km/h"
+                    if max_speed_height:
+                        _msg += f" at {max_speed_height} m"
+                    context.bot.send_message(
+                        chat_id=update.effective_chat.id,
+                        text=_msg,
+                        parse_mode=ParseMode.HTML,
+                    )
+
+                avg_speed_kmh = radiosondy_response_data["avg_speed_kmh"]
+                if avg_speed_kmh:
+                    context.bot.send_message(
+                        chat_id=update.effective_chat.id,
+                        text=f"<b>Average Speed:</b> {launch_site} km/h",
+                        parse_mode=ParseMode.HTML,
+                    )
+
+                max_altitude = radiosondy_response_data["max_altitude"]
+                if max_altitude:
+                    context.bot.send_message(
+                        chat_id=update.effective_chat.id,
+                        text=f"<b>Maximum Altitude:</b> {max_altitude} m",
+                        parse_mode=ParseMode.HTML,
+                    )
+
+                avg_ascent_speed = radiosondy_response_data["avg_ascent_speed"]
+                if avg_ascent_speed:
+                    context.bot.send_message(
+                        chat_id=update.effective_chat.id,
+                        text=f"<b>Average Ascent Speed:</b> {avg_ascent_speed} m/s",
+                        parse_mode=ParseMode.HTML,
+                    )
+
+                avg_descent_speed = radiosondy_response_data["avg_descent_speed"]
+                if avg_descent_speed:
+                    context.bot.send_message(
+                        chat_id=update.effective_chat.id,
+                        text=f"<b>Average Descent Speed:</b> {avg_descent_speed} m/s",
+                        parse_mode=ParseMode.HTML,
+                    )
+
                 latitude = radiosondy_response_data["latitude"]
                 longitude = radiosondy_response_data["longitude"]
                 if latitude and longitude:
