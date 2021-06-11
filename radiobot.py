@@ -88,7 +88,7 @@ def sonde(update, context):
             # Run the query on habhub.org
             context.bot.send_message(
                 chat_id=update.effective_chat.id,
-                text=f"<i>Querying position data for '{sonde}' on <pre>habhub.org</pre></i>",
+                text=f"<i>Querying position data for '{sonde}' on <pre>predict.habhub.org</pre></i>",
                 parse_mode=ParseMode.HTML,
                 disable_web_page_preview=True,
             )
@@ -124,7 +124,7 @@ def sonde(update, context):
             else:
                 context.bot.send_message(
                     chat_id=update.effective_chat.id,
-                    text=f"`<i>Habhub did not provide any data for '{sonde}'`</i>",
+                    text=f"<i><pre>predict.habhub.org</pre> did not provide any data for '{sonde}'. Either the site is down or your probe does not exist</i>",
                     parse_mode=ParseMode.HTML,
                 )
             # Run the query on radiosondy.info
@@ -251,7 +251,7 @@ def sonde(update, context):
             else:
                 context.bot.send_message(
                     chat_id=update.effective_chat.id,
-                    text=f"<i><pre>Radiosondy.info</pre> did not provide any data for '{sonde}'</i>",
+                    text=f"<i><pre>Radiosondy.info</pre> did not provide any data for '{sonde}'. Either the site is down or your probe does not exist.</i>",
                     parse_mode=ParseMode.HTML,
                 )
             if not found_something:
